@@ -1,2 +1,42 @@
-<h1>Clients#index</h1>
-<p>Find me in app/views/clients/index.html.erb</p>
+<div class="container mt-4">
+  <h1 class="mb-4">Lista de clientes</h1>
+
+  <%= link_to 'Agregar Cliente', new_client_path, class: 'btn btn-primary mb-3' %>
+
+  <% if notice %>
+    <div class="alert alert-success"><%= notice %></div>
+  <% end %>
+
+  <table class="table table-bordered table-striped">
+    <thead class="table-dark">
+    <tr>
+      <th>Nombre</th>
+      <th>Tipo</th>
+      <th>Teléfono</th>
+      <th>Email</th>
+      <th>Dirección</th>
+      <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @clients.each do |client| %>
+      <tr>
+        <td><%= client.name %></td>
+        <td><%= client.client_type %></td>
+        <td><%= client.phone_number %></td>
+        <td><%= client.email %></td>
+        <td><%= client.address %></td>
+        <td>
+          <%= link_to 'Editar', edit_client_path(client), class: 'btn btn-sm btn-warning' %>
+          <%= link_to 'Eliminar', client_path(client),
+                      data: { turbo_method: :delete, turbo_confirm: '¿Seguro que deseas eliminar este cliente?' },
+                      class: 'btn btn-sm btn-danger' %>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
+
+
+
