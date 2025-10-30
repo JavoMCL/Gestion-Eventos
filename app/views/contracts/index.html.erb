@@ -1,0 +1,39 @@
+<div class="container mt-4">
+  <h1 class="mb-4">Lista de contratos</h1>
+
+  <%= link_to 'Agregar Contrato', new_contract_path, class: 'btn btn-primary mb-3' %>
+
+  <% if notice %>
+    <div class="alert alert-success"><%= notice %></div>
+  <% end %>
+
+  <table class="table table-bordered table-striped">
+    <thead class="table-dark">
+    <tr>
+      <th>Número de contrato</th>
+      <th>Evento</th>
+      <th>Fecha</th>
+      <th>Monto Total</th>
+      <th>Estado</th>
+      <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @contracts.each do |contract| %>
+      <tr class="text-capitalize">
+        <td><%= contract.contract_number %></td>
+        <td><%= contract.event&.name %></td>
+        <td><%= contract.contract_date&.strftime("%d/%m/%Y") %></td>
+        <td><%= number_to_currency(contract.amount, unit: "Gs ", precision: 0) %></td>
+        <td><%= contract.state %></td>
+        <td>
+          <%= link_to 'Editar', edit_contract_path(contract), class: 'btn btn-sm btn-warning' %>
+          <%= link_to 'Eliminar', contract_path(contract),
+                      data: { turbo_method: :delete, turbo_confirm: '¿Seguro que deseas eliminar este contrato?' },
+                      class: 'btn btn-sm btn-danger' %>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>

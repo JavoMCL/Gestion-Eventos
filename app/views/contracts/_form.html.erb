@@ -1,0 +1,42 @@
+<%= form_with(model: @contract, local: true, class: "needs-validation") do |form| %>
+  <% if @contract.errors.any? %>
+    <div class="alert alert-danger">
+      <h4>Errores encontrados:</h4>
+      <ul>
+        <% @contract.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= form.label :contract_number, "Número de Contrato", class: "form-label" %>
+    <%= form.text_field :contract_number, class: "form-control", required: true %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :event_id, "Evento asociado", class: "form-label" %>
+    <%= form.collection_select :event_id, @events, :id, :name,
+                               { prompt: "Seleccione un evento" },
+                               { class: "form-select" } %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :contract_date, "Fecha de contrato", class: "form-label" %>
+    <%= form.date_field :contract_date, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :amount, "Monto total (Gs)", class: "form-label" %>
+    <%= form.number_field :amount, step: "0.01", class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :state, "Estado", class: "form-label" %>
+    <%= form.select :state, ['Activo', 'Cancelado', 'Completado'], {}, class: "form-select" %>
+  </div>
+
+  <%= form.submit @contract.new_record? ? 'Agregar' : 'Editar', class: "btn btn-success" %>
+  <%= link_to 'Cancelar', contracts_path, class: "btn btn-secondary" %>
+<% end %>

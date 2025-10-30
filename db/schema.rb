@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_27_032441) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_30_175227) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -23,4 +23,29 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_27_032441) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  create_table "contracts", force: :cascade do |t|
+    t.bigint "event_id", null: false
+    t.string "contract_number"
+    t.date "contract_date"
+    t.decimal "amount", precision: 12, scale: 2
+    t.string "state"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_contracts_on_event_id"
+  end
+
+  create_table "events", force: :cascade do |t|
+    t.bigint "client_id"
+    t.string "name"
+    t.string "event_type"
+    t.date "start_date"
+    t.date "end_date"
+    t.string "address"
+    t.string "state"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_foreign_key "contracts", "events"
 end

@@ -1,0 +1,52 @@
+<%= form_with(model: @event, local: true, class: "needs-validation") do |form| %>
+  <% if @event.errors.any? %>
+    <div class="alert alert-danger">
+      <h4>Errores encontrados:</h4>
+      <ul>
+        <% @event.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= form.label :name, "Nombre del evento", class: "form-label" %>
+    <%= form.text_field :name, class: "form-control", required: true %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :client_id, "Cliente", class: "form-label" %>
+    <%= form.collection_select :client_id, @clients, :id, :name,
+                               { prompt: "Seleccione un cliente" },
+                               { class: "form-select" } %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :event_type, "Tipo de evento", class: "form-label" %>
+    <%= form.select :event_type, ['Social', 'Corporativo'], {}, class: "form-select" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :start_date, "Fecha de inicio", class: "form-label" %>
+    <%= form.date_field :start_date, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :end_date, "Fecha de finalización", class: "form-label" %>
+    <%= form.date_field :end_date, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :address, "Dirección", class: "form-label" %>
+    <%= form.text_field :address, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :state, "Estado", class: "form-label" %>
+    <%= form.select :state, ['Planificado', 'Confirmado', 'Cancelado'], {}, class: "form-select" %>
+  </div>
+
+  <%= form.submit @event.new_record? ? 'Agregar' : 'Editar', class: "btn btn-success" %>
+  <%= link_to 'Cancelar', events_path, class: "btn btn-secondary" %>
+<% end %>
