@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_01_062808) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_02_211927) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -34,6 +34,19 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_01_062808) do
     t.string "address"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "contract_details", force: :cascade do |t|
+    t.bigint "contract_id", null: false
+    t.bigint "service_id", null: false
+    t.integer "quantity"
+    t.decimal "unit_price", precision: 12, scale: 2
+    t.decimal "subtotal", precision: 12, scale: 2
+    t.string "notes"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["contract_id"], name: "index_contract_details_on_contract_id"
+    t.index ["service_id"], name: "index_contract_details_on_service_id"
   end
 
   create_table "contracts", force: :cascade do |t|
@@ -69,7 +82,19 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_01_062808) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "services", force: :cascade do |t|
+    t.string "name"
+    t.string "category"
+    t.string "description"
+    t.decimal "base_amount", precision: 12, scale: 2
+    t.boolean "active"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   add_foreign_key "assignments", "employees"
   add_foreign_key "assignments", "events"
+  add_foreign_key "contract_details", "contracts"
+  add_foreign_key "contract_details", "services"
   add_foreign_key "contracts", "events"
 end
