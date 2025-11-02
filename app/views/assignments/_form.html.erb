@@ -1,0 +1,29 @@
+<%= form_with(model: @assignment, local: true) do |form| %>
+  <div class="mb-3">
+    <%= form.label :event_id, "Evento", class: "form-label" %>
+    <%= form.collection_select :event_id, Event.all, :id, :name, { prompt: "Seleccione un evento" }, class: "form-select" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :employee_id, "Empleado", class: "form-label" %>
+    <%= form.collection_select :employee_id, Employee.all, :id, :name, { prompt: "Seleccione un empleado" }, class: "form-select" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :role, "Rol", class: "form-label" %>
+    <%= form.text_field :role, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :task, "Tarea", class: "form-label" %>
+    <%= form.text_field :task, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :state, "Estado", class: "form-label" %>
+    <%= form.select :state, ["Planificada", "En Proceso", "Finalizada"], {}, class: "form-select" %>
+  </div>
+
+  <%= form.submit @assignment.new_record? ? "Agregar" : "Actualizar", class: "btn btn-success" %>
+  <%= link_to "Cancelar", assignments_path, class: "btn btn-secondary ms-2" %>
+<% end %>

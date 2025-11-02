@@ -1,2 +1,65 @@
-<h1>Reports#index</h1>
-<p>Find me in app/views/reports/index.html.erb</p>
+<div class="container mt-4">
+  <h2 class="text-primary mb-4">📊 Panel de Reportes</h2>
+
+  <div class="row g-3">
+    <div class="col-md-4">
+      <div class="card shadow-sm border-success">
+        <div class="card-body text-center">
+          <h5 class="card-title text-success">Clientes Registrados</h5>
+          <p class="display-6 fw-bold"><%= @total_clients %></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card shadow-sm border-primary">
+        <div class="card-body text-center">
+          <h5 class="card-title text-primary">Eventos Totales</h5>
+          <p class="display-6 fw-bold"><%= @total_events %></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card shadow-sm border-warning">
+        <div class="card-body text-center">
+          <h5 class="card-title text-warning">Contratos Activos</h5>
+          <p class="display-6 fw-bold"><%= @active_contracts %></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-3 mt-3">
+    <div class="col-md-4">
+      <div class="card shadow-sm border-info">
+        <div class="card-body text-center">
+          <h5 class="card-title text-info">Empleados Registrados</h5>
+          <p class="display-6 fw-bold"><%= @total_employees %></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card shadow-sm border-dark">
+        <div class="card-body text-center">
+          <h5 class="card-title text-dark">Empleados Asignados</h5>
+          <p class="display-6 fw-bold"><%= @assigned_employees %></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card shadow-sm border-secondary">
+        <div class="card-body text-center">
+          <h5 class="card-title text-secondary">Empleados Sin Asignar</h5>
+          <p class="display-6 fw-bold"><%= @unassigned_employees %></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center mt-4">
+    <%= link_to "Volver al Inicio", root_path, class: "btn btn-outline-primary" %>
+  </div>
+</div>

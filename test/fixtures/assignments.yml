@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  event: one
+  employee: one
+  role: MyString
+  task: MyString
+  state: MyString
+
+two:
+  event: two
+  employee: two
+  role: MyString
+  task: MyString
+  state: MyString

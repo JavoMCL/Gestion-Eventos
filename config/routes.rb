@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get "assignments/index"
+  get "employees/index"
   get "reports/index"
   get "staff/index"
   get "services/index"
@@ -9,6 +11,13 @@ Rails.application.routes.draw do
   resources :clients
   resources :events
   resources :contracts
+  resources :employees
+
+  resources :assignments
+  resources :reports, only: [:index]
+
+
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
