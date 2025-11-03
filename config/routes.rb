@@ -1,7 +1,5 @@
 Rails.application.routes.draw do
-  get "contract_details/index"
-  get "contract_details/new"
-  get "contract_details/edit"
+
   get "assignments/index"
   get "employees/index"
   get "reports/index"
@@ -16,6 +14,8 @@ Rails.application.routes.draw do
   resources :events
   resources :contracts
   resources :employees
+  resources :contract_details
+  resources :services
 
   resources :assignments
   resources :reports, only: [:index]

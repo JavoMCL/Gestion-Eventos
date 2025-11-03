@@ -27,10 +27,8 @@
           <td>
             <%= link_to "Editar", edit_employee_path(employee), class: "btn btn-warning btn-sm" %>
             <%= link_to "Eliminar", employee_path(employee),
-                        data: { turbo_method: :delete, confirm: "¿Deseas eliminar este empleado?" },
+                        data: { turbo_method: :delete, turbo_confirm: "¿Deseas eliminar este empleado?" },
                         class: "btn btn-danger btn-sm" %>
-
-
           </td>
         </tr>
       <% end %>

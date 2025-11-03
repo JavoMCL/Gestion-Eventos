@@ -27,8 +27,7 @@
           <td>
             <%= link_to "Editar", edit_assignment_path(assignment), class: "btn btn-warning btn-sm" %>
             <%= link_to "Eliminar", assignment_path(assignment),
-                        method: :delete,
-                        data: { confirm: "¿Eliminar esta asignación?" },
+                        data: { turbo_method: :delete, turbo_confirm: "¿Deseas eliminar esta asignacion?" },
                         class: "btn btn-danger btn-sm" %>
           </td>
         </tr>
