@@ -3,6 +3,15 @@ class EmployeesController < ApplicationController
 
   def index
     @employees = Employee.all
+
+    if params[:search].present?
+      search_term = "%#{params[:search]}%"
+      @employees = @employees.where(
+        "name ILIKE ? OR email ILIKE ? OR position ILIKE ?",
+        search_term, search_term, search_term
+      )
+    end
+    @employees = @employees.page(params[:page]).per(10)
   end
 
   def new

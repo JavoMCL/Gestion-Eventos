@@ -3,6 +3,15 @@ class EventsController < ApplicationController
 
   def index
     @events = Event.includes(:client).all
+
+    if params[:search].present?
+      search_term = "%#{params[:search]}%"
+      @events = @events.where(
+        "name ILIKE ? OR event_type ILIKE ? OR state ILIKE ? OR address ILIKE ?",
+        search_term, search_term, search_term, search_term
+      )
+    end
+    @events = @events.page(params[:page]).per(10)
   end
 
   def new

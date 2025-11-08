@@ -45,26 +45,16 @@
           <li class="nav-item">
             <%= link_to "Eventos", events_index_path, class: "nav-link" %>
           </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownPersonal" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Contratos
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdownPersonal">
-              <li><%= link_to "Contrato", contracts_path, class: "dropdown-item" %></li>
-              <li><%= link_to "Detalles del contrato", contract_details_path, class: "dropdown-item" %></li>
-            </ul>
+          <li class="nav-item"><%= link_to "Contrato", contracts_path, class: "nav-link" %>
+          </li>
+          <li class="nav-item"><%= link_to "Detalles del contrato", contract_details_path, class: "nav-link" %>
           </li>
           <li class="nav-item">
             <%= link_to "Servicios", services_index_path, class: "nav-link" %>
           </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownPersonal" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Personal y Asignaciones
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdownPersonal">
-              <li><%= link_to "Gestión de Personal", employees_path, class: "dropdown-item" %></li>
-              <li><%= link_to "Asignaciones a Eventos", assignments_path, class: "dropdown-item" %></li>
-            </ul>
+          <li class="nav-item"><%= link_to "Gestión de Personal", employees_path, class: "nav-link" %>
+          </li>
+          <li class="nav-item"><%= link_to "Asignaciones a Eventos", assignments_path, class: "nav-link" %>
           </li>
 
           <li class="nav-item">

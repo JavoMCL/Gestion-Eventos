@@ -3,6 +3,15 @@ class ClientsController < ApplicationController
 
   def index
     @clients = Client.all
+
+    if params[:search].present?
+      search_term = "%#{params[:search]}%"
+      @clients = @clients.where(
+        "name ILIKE ? OR email ILIKE ? OR address ILIKE ?",
+        search_term, search_term, search_term
+      )
+    end
+    @clients = @clients.page(params[:page]).per(10)
   end
 
   def new

@@ -3,6 +3,15 @@ class ServicesController < ApplicationController
 
   def index
     @services = Service.all
+
+    if params[:search].present?
+      search_term = "%#{params[:search]}%"
+      @services = @services.where(
+        "name ILIKE ? OR category ILIKE ? OR description ILIKE ?",
+        search_term, search_term, search_term
+      )
+    end
+    @services = @services.page(params[:page]).per(10)
   end
 
   def new

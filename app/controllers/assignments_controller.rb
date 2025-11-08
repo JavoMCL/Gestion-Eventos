@@ -3,6 +3,15 @@ class AssignmentsController < ApplicationController
 
   def index
     @assignments = Assignment.includes(:event, :employee).all
+
+    if params[:search].present?
+      search_term = "%#{params[:search]}%"
+      @assignments = @assignments.where(
+        "role ILIKE ? OR task ILIKE ? OR state ILIKE ?",
+        search_term, search_term, search_term
+      )
+    end
+    @assignments = @assignments.page(params[:page]).per(10)
   end
 
   def new

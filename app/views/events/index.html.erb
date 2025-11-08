@@ -1,7 +1,14 @@
 <div class="container mt-4">
-  <h1 class="mb-4">Lista de clientes</h1>
+  <h1 class="mb-4">Lista de eventos</h1>
 
   <%= link_to 'Agregar Evento', new_event_path, class: 'btn btn-primary mb-3' %>
+
+  <div class="mb-3 d-flex justify-content-end">
+    <%= form_with url: events_path, method: :get, local: true, class: "d-flex" do %>
+      <%= text_field_tag :search, params[:search], class: "form-control me-2", placeholder: "Buscar..." %>
+      <%= submit_tag "Buscar", class: "btn btn-primary" %>
+    <% end %>
+  </div>
 
   <% if notice %>
     <div class="alert alert-success"><%= notice %></div>
@@ -40,5 +47,17 @@
     <% end %>
     </tbody>
   </table>
-</div>
 
+  <div class="d-flex justify-content-between align-items-center mt-3">
+    <small class="text-muted">
+      Mostrando <%= @events.offset_value + 1 %> -
+      <%= @events.offset_value + @events.length %>
+      de <%= @events.total_count %> evento<%= @events.total_count != 1 ? 's' : '' %>
+      <% if params[:search].present? %>
+        (resultados de búsqueda)
+      <% end %>
+    </small>
+
+    <%= paginate @events, params: { search: params[:search] } %>
+  </div>
+</div>

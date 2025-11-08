@@ -4,6 +4,13 @@
     <%= link_to "Agregar Personal", new_employee_path, class: "btn btn-success" %>
   </div>
 
+  <div class="mb-3 d-flex justify-content-end">
+    <%= form_with url: assignments_path, method: :get, local: true, class: "d-flex" do %>
+      <%= text_field_tag :search, params[:search], class: "form-control me-2", placeholder: "Buscar..." %>
+      <%= submit_tag "Buscar", class: "btn btn-primary" %>
+    <% end %>
+  </div>
+
   <% if @employees.any? %>
     <table class="table table-hover table-bordered">
       <thead class="table-light">
@@ -37,6 +44,18 @@
   <% else %>
     <p class="text-muted">No hay empleados registrados.</p>
   <% end %>
+  <div class="mt-3">
+    <div class="d-flex justify-content-between align-items-center">
+      <small class="text-muted">
+        Mostrando <%= @employees.offset_value + 1 %> - <%= @employees.offset_value + @employees.length %>
+        de <%= @employees.total_count %> artículo<%= @employees.total_count != 1 ? 's' : '' %>
+        <% if params[:search].present? %>
+          (resultados de búsqueda)
+        <% end %>
+      </small>
+      <%= paginate @employees, params: { search: params[:search] } %>
+    </div>
+  </div>
 </div>
 
 
