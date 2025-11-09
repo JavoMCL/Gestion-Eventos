@@ -1,9 +1,9 @@
 <div class="container mt-4">
-  <h1 class="mb-4">Lista de eventos</h1>
+  <h2 class="mb-4">Lista de eventos</h2>
 
   <%= link_to 'Agregar Evento', new_event_path, class: 'btn btn-primary mb-3' %>
 
-  <div class="mb-3 d-flex justify-content-end">
+  <div class="mb-3 d-flex justify-content-start">
     <%= form_with url: events_path, method: :get, local: true, class: "d-flex" do %>
       <%= text_field_tag :search, params[:search], class: "form-control me-2", placeholder: "Buscar..." %>
       <%= submit_tag "Buscar", class: "btn btn-primary" %>

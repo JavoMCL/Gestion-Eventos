@@ -17,8 +17,130 @@
   <link rel="icon" href="/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/icon.png">
 
-  <!-- Bootstrap CSS -->
+
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+
+  <style>
+      :root {
+          --lila-principal: #9b7dd4;
+          --lila-claro: #c8b5e8;
+          --lila-oscuro: #7952b3;
+          --lila-suave: #f3efff;
+      }
+
+      body {
+          background: linear-gradient(135deg, #f3efff 0%, #e8dff5 100%);
+          min-height: 100vh;
+      }
+
+      .navbar {
+          background: linear-gradient(90deg, var(--lila-principal), var(--lila-claro)) !important;
+          box-shadow: 0 2px 10px rgba(123, 82, 179, 0.3);
+          border-radius: 10px;
+          margin-bottom: 2rem;
+      }
+
+      .navbar-brand, .nav-link {
+          color: white !important;
+          font-weight: 500;
+      }
+
+      .index-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 2rem;
+          flex-wrap: wrap;
+          gap: 1rem;
+      }
+
+      .search-form {
+          display: flex;
+          gap: 0.5rem;
+          align-items: center;
+          background: transparent !important;
+          padding: 0 !important;
+          box-shadow: none !important;
+          margin: 0 0 1.5rem 0 !important;
+          max-width: none !important;
+      }
+
+      .search-form input[type="text"] {
+          flex: 1;
+          border: 2px solid var(--lila-claro);
+          border-radius: 10px;
+          padding: 0.75rem 1rem;
+          background: white;
+          transition: all 0.3s ease;
+      }
+
+      .search-form input[type="text"]:focus {
+          border-color: var(--lila-principal);
+          box-shadow: 0 0 0 0.2rem rgba(155, 125, 212, 0.25);
+          outline: none;
+      }
+
+
+      form:not(.search-form):not(.d-flex) {
+          background: white;
+          padding: 2rem;
+          border-radius: 15px;
+          box-shadow: 0 4px 20px rgba(123, 82, 179, 0.15);
+          margin: 1.5rem auto;
+          max-width: 800px;
+      }
+
+      .form-control, .form-select {
+          border: 2px solid var(--lila-claro);
+          border-radius: 10px;
+          padding: 0.75rem;
+          transition: all 0.3s ease;
+      }
+
+      .btn {
+          border-radius: 10px;
+          padding: 0.6rem 1.5rem;
+          font-weight: 500;
+          transition: all 0.3s ease;
+      }
+
+      .btn-primary {
+          background-color: var(--lila-principal);
+          border-color: var(--lila-principal);
+      }
+
+      .btn-primary:hover {
+          background-color: var(--lila-oscuro);
+          border-color: var(--lila-oscuro);
+          transform: translateY(-2px);
+          box-shadow: 0 4px 8px rgba(123, 82, 179, 0.4);
+      }
+
+      .table {
+          background-color: white;
+          border-radius: 10px;
+          overflow: hidden;
+          box-shadow: 0 2px 10px rgba(123, 82, 179, 0.1);
+      }
+
+
+      .table thead th {
+          color: white !important;
+          padding: 1rem;
+          border: none;
+      }
+
+      .table tbody tr:hover {
+          background-color: var(--lila-suave);
+          transition: background-color 0.3s ease;
+      }
+
+  </style>
+
+
+  <%# Includes all stylesheet files in app/assets/stylesheets %>
+  <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
 
   <%# Includes all stylesheet files in app/assets/stylesheets %>
   <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
