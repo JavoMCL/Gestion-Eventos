@@ -1,4 +1,4 @@
-<%= form_with(model: @contract, local: true, class: "needs-validation") do |form| %>
+<%= form_with(model: @contract, local: true, class: "needs-validation", html: { novalidate: true }) do |form| %>
   <% if @contract.errors.any? %>
     <div class="alert alert-danger">
       <h4>Errores encontrados:</h4>
@@ -10,33 +10,265 @@
     </div>
   <% end %>
 
-  <div class="mb-3">
-    <%= form.label :contract_number, "Número de Contrato", class: "form-label" %>
-    <%= form.text_field :contract_number, class: "form-control", required: true %>
+  <!-- =============================
+         DATOS GENERALES
+  ============================== -->
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <%= form.label :contract_number, "Número de Contrato", class: "form-label" %>
+      <%= form.text_field :contract_number, class: "form-control", required: true %>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <%= form.label :event_id, "Evento asociado", class: "form-label" %>
+      <%= form.collection_select :event_id, @events, :id, :name,
+                                 { prompt: "Seleccione un evento" },
+                                 { class: "form-select" } %>
+    </div>
   </div>
 
-  <div class="mb-3">
-    <%= form.label :event_id, "Evento asociado", class: "form-label" %>
-    <%= form.collection_select :event_id, @events, :id, :name,
-                               { prompt: "Seleccione un evento" },
-                               { class: "form-select" } %>
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <%= form.label :contract_date, "Fecha de contrato", class: "form-label" %>
+      <%= form.date_field :contract_date, class: "form-control", value: Date.current %>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <%= form.label :state, "Estado", class: "form-label" %>
+      <%= form.select :state, ['Activo', 'Cancelado', 'Completado'], { selected: 'Activo' }, class: "form-select" %>
+    </div>
   </div>
 
-  <div class="mb-3">
-    <%= form.label :contract_date, "Fecha de contrato", class: "form-label" %>
-    <%= form.date_field :contract_date, class: "form-control" %>
+  <!-- =============================
+         DETALLES (TABLA)
+  ============================== -->
+
+  <div class="mt-4">
+    <label class="form-label fw-bold">Detalles del contrato</label>
+
+    <table class="table table-bordered" id="details-table">
+      <thead class="table-light">
+      <tr>
+        <th>Servicio</th>
+        <th>Cantidad</th>
+        <th>Precio Unitario</th>
+        <th>Subtotal</th>
+        <th>Notas</th>
+        <th>Acciones</th>
+      </tr>
+      </thead>
+      <tbody>
+      <%= form.fields_for :contract_details do |cd_form| %>
+        <tr class="detail-row">
+          <td>
+            <%= cd_form.collection_select :service_id, @services, :id, :name,
+                                          { prompt: "Seleccione un servicio" },
+                                          { class: "form-select service-select" } %>
+          </td>
+          <td>
+            <%= cd_form.number_field :quantity, class: "form-control quantity-input", min: 1, value: cd_form.object.quantity || 1 %>
+          </td>
+          <td>
+            <%= cd_form.number_field :unit_price, class: "form-control price-input", step: "0.01", min: 0, readonly: true %>
+          </td>
+          <td>
+            <input type="text" class="form-control subtotal-field"
+                   value="<%= number_to_currency((cd_form.object.quantity || 0) * (cd_form.object.unit_price || 0), unit: "", delimiter: ".", separator: ",", precision: 0) %>"
+                   readonly>
+          </td>
+          <td>
+            <%= cd_form.text_area :notes, class: "form-control", rows: 1 %>
+          </td>
+          <td>
+            <% if cd_form.object.persisted? %>
+              <%= cd_form.hidden_field :id %>
+            <% end %>
+            <%= cd_form.hidden_field :_destroy, class: "destroy-field", value: "0" %>
+            <button type="button" class="btn btn-sm btn-danger remove-detail-btn">
+              <i class="bi bi-trash"></i> Eliminar
+            </button>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+
+    <button type="button" class="btn btn-outline-primary btn-sm" id="add-detail-btn">
+      <i class="bi bi-plus-circle"></i> Agregar Servicio
+    </button>
   </div>
 
-  <div class="mb-3">
-    <%= form.label :amount, "Monto total (Gs)", class: "form-label" %>
-    <%= form.number_field :amount, step: "0.01", class: "form-control" %>
+  <!-- =============================
+         MONTO TOTAL
+  ============================== -->
+
+  <div class="mt-4 mb-3">
+    <%= form.label :amount, "Monto total (Gs)", class: "form-label fw-bold" %>
+    <%= form.number_field :amount, step: "0.01",
+                          class: "form-control fw-bold",
+                          id: "total-amount",
+                          readonly: true %>
   </div>
 
-  <div class="mb-3">
-    <%= form.label :state, "Estado", class: "form-label" %>
-    <%= form.select :state, ['Activo', 'Cancelado', 'Completado'], {}, class: "form-select" %>
-  </div>
+  <%= form.submit @contract.new_record? ? 'Crear Contrato' : 'Actualizar Contrato', class: "btn btn-success" %>
+  <%= link_to 'Cancelar', contracts_path, class: "btn btn-secondary ms-2" %>
 
-  <%= form.submit @contract.new_record? ? 'Agregar' : 'Editar', class: "btn btn-success" %>
-  <%= link_to 'Cancelar', contracts_path, class: "btn btn-secondary" %>
 <% end %>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+        // JSON válido generado por Rails
+        const servicesData = <%= raw(
+    @services.map { |s| [s.id.to_s, { price: s.base_amount.to_f }] }.to_h.to_json
+  ) %>;
+
+        console.log("SERVICES DATA:", servicesData);
+
+        let detailIndex = <%= @contract.contract_details.size %>;
+
+        function calcularSubtotal(row) {
+            const quantity = parseFloat(row.querySelector('.quantity-input')?.value) || 0;
+            const price    = parseFloat(row.querySelector('.price-input')?.value) || 0;
+            const subtotal = quantity * price;
+
+            const subtotalField = row.querySelector('.subtotal-field');
+            if (subtotalField) {
+                subtotalField.value = subtotal.toLocaleString('es-PY', {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                });
+            }
+
+            calcularTotal();
+        }
+
+        function calcularTotal() {
+            let total = 0;
+            document.querySelectorAll('.subtotal-field').forEach(f => {
+                // ignorar campos vacíos o no numéricos
+                const raw = (f.value || '').toString().replace(/\./g, '');
+                total += parseFloat(raw) || 0;
+            });
+
+            const totalEl = document.getElementById('total-amount');
+            if (totalEl) {
+                // si querés con decimales usar total.toFixed(2)
+                totalEl.value = total;
+            }
+        }
+
+        // Actualizar precio al seleccionar servicio
+        document.addEventListener('change', function(e) {
+            if (e.target.classList.contains('service-select')) {
+                const row = e.target.closest('tr');
+                const serviceId = e.target.value;
+                const priceInput = row.querySelector('.price-input');
+
+                if (servicesData[serviceId] && priceInput) {
+                    priceInput.value = servicesData[serviceId].price;
+                    calcularSubtotal(row);
+                } else if (priceInput) {
+                    priceInput.value = 0;
+                    calcularSubtotal(row);
+                }
+            }
+        });
+
+        // Recalcular cuando cambia la cantidad
+        document.addEventListener('input', function(e) {
+            if (e.target.classList.contains('quantity-input')) {
+                const row = e.target.closest('tr');
+                if (row) calcularSubtotal(row);
+            }
+        });
+
+        // Opciones para select (generadas en server)
+        let options = '<option value="">Seleccione un servicio</option>';
+        <% @services.each do |service| %>
+        options += '<option value="<%= service.id %>"><%= j service.name %></option>';
+        <% end %>
+
+        // Agregar nueva fila
+        const addBtn = document.getElementById('add-detail-btn');
+        if (addBtn) {
+            addBtn.addEventListener('click', function() {
+                const tbody = document.querySelector('#details-table tbody');
+                const newRow = document.createElement('tr');
+                newRow.className = 'detail-row';
+
+                newRow.innerHTML = `
+        <td>
+          <select name="contract[contract_details_attributes][${detailIndex}][service_id]"
+                  class="form-select service-select">${options}</select>
+        </td>
+
+        <td>
+          <input type="number" name="contract[contract_details_attributes][${detailIndex}][quantity]"
+                 class="form-control quantity-input" min="1" value="1">
+        </td>
+
+        <td>
+          <input type="number" name="contract[contract_details_attributes][${detailIndex}][unit_price]"
+                 class="form-control price-input" step="0.01" min="0" value="0" readonly>
+        </td>
+
+        <td>
+          <input type="text" class="form-control subtotal-field" value="0" readonly>
+        </td>
+
+        <td>
+          <textarea name="contract[contract_details_attributes][${detailIndex}][notes]"
+                    class="form-control" rows="1"></textarea>
+        </td>
+
+        <td>
+          <input type="hidden" name="contract[contract_details_attributes][${detailIndex}][_destroy]"
+                 class="destroy-field" value="0">
+          <button type="button" class="btn btn-sm btn-danger remove-detail-btn">
+            <i class="bi bi-trash"></i> Eliminar
+          </button>
+        </td>
+      `;
+
+                tbody.appendChild(newRow);
+                detailIndex++;
+            });
+        }
+
+        // Eliminar fila (delegado)
+        document.addEventListener('click', function(e) {
+            const btn = e.target.closest('.remove-detail-btn');
+            if (!btn) return;
+
+            const row = btn.closest('tr');
+            if (!row) return;
+
+            // marcar _destroy si existe (para filas persistidas)
+            const destroyField = row.querySelector('.destroy-field');
+            if (destroyField) {
+                destroyField.value = '1';
+            }
+
+            // eliminar del DOM
+            row.remove();
+
+            // recalcular total
+            calcularTotal();
+        });
+
+        // Inicializar filas existentes
+        document.querySelectorAll('.detail-row').forEach(row => {
+            const sel = row.querySelector('.service-select');
+            const serviceId = sel ? sel.value : null;
+
+            const priceInput = row.querySelector('.price-input');
+            if (serviceId && servicesData[serviceId] && priceInput) {
+                priceInput.value = servicesData[serviceId].price;
+            }
+
+            calcularSubtotal(row);
+        });
+
+    });
+</script>

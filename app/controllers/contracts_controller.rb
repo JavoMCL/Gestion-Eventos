@@ -1,5 +1,6 @@
 class ContractsController < ApplicationController
   before_action :set_contract, only: [:edit, :update, :destroy]
+  before_action :set_form_data, only: [:new, :edit, :create, :update]
 
   def index
     @contracts = Contract.includes(:event).all
@@ -7,7 +8,7 @@ class ContractsController < ApplicationController
 
   def new
     @contract = Contract.new
-    @events = Event.all
+    @contract.contract_details.build
   end
 
   def create
@@ -15,20 +16,18 @@ class ContractsController < ApplicationController
     if @contract.save
       redirect_to contracts_path, notice: 'Contrato agregado exitosamente.'
     else
-      @events = Event.all
       render :new, status: :unprocessable_entity
     end
   end
 
   def edit
-    @events = Event.all
+    # @contract ya está cargado por before_action
   end
 
   def update
     if @contract.update(contract_params)
       redirect_to contracts_path, notice: 'Contrato actualizado correctamente.'
     else
-      @events = Event.all
       render :edit, status: :unprocessable_entity
     end
   end
@@ -44,8 +43,27 @@ class ContractsController < ApplicationController
     @contract = Contract.find(params[:id])
   end
 
+  def set_form_data
+    @events = Event.all
+    @services = Service.where(active: true)
+  end
+
   def contract_params
-    params.require(:contract).permit(:contract_number, :event_id, :contract_date, :amount, :state)
+    params.require(:contract).permit(
+      :contract_number,
+      :event_id,
+      :contract_date,
+      :amount,
+      :state,
+      contract_details_attributes: [
+        :id,
+        :service_id,
+        :quantity,
+        :unit_price,
+        :notes,
+        :_destroy
+      ]
+    )
   end
 end
 

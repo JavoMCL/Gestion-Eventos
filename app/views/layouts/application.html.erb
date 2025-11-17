@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
 
@@ -152,41 +154,88 @@
 <div class="container">
 
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
-      <%= link_to "Inicio", root_path, class: "navbar-brand" %>
+    <style>
+        .nav-link {
+            display: flex !important;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 3px;
+            font-size: 0.9rem;
+        }
 
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        .nav-link i {
+            font-size: 1.3rem;
+        }
+    </style>
+
+    <div class="container-fluid">
+      <%= link_to root_path, class: "navbar-brand d-flex flex-column align-items-center" do %>
+        <i class="bi bi-house-door-fill" style="font-size: 1.5rem"></i>
+        Inicio
+      <% end %>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
 
       <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
+        <ul class="navbar-nav w-100 d-flex justify-content-evenly">
+
           <li class="nav-item">
-            <%= link_to "Clientes", clients_index_path, class: "nav-link" %>
-          </li>
-          <li class="nav-item">
-            <%= link_to "Eventos", events_index_path, class: "nav-link" %>
-          </li>
-          <li class="nav-item"><%= link_to "Contrato", contracts_path, class: "nav-link" %>
-          </li>
-          <li class="nav-item"><%= link_to "Detalles del contrato", contract_details_path, class: "nav-link" %>
-          </li>
-          <li class="nav-item">
-            <%= link_to "Servicios", services_index_path, class: "nav-link" %>
-          </li>
-          <li class="nav-item"><%= link_to "Gestión de Personal", employees_path, class: "nav-link" %>
-          </li>
-          <li class="nav-item"><%= link_to "Asignaciones a Eventos", assignments_path, class: "nav-link" %>
+            <%= link_to clients_index_path, class: "nav-link" do %>
+              <i class="bi bi-people-fill"></i>
+              Clientes
+            <% end %>
           </li>
 
           <li class="nav-item">
-            <%= link_to "Reportes", reports_index_path, class: "nav-link" %>
+            <%= link_to events_index_path, class: "nav-link" do %>
+              <i class="bi bi-calendar-event-fill"></i>
+              Eventos
+            <% end %>
+          </li>
+
+          <li class="nav-item">
+            <%= link_to contracts_path, class: "nav-link" do %>
+              <i class="bi bi-file-earmark-text-fill"></i>
+              Contratos
+            <% end %>
+          </li>
+
+          <li class="nav-item">
+            <%= link_to services_index_path, class: "nav-link" do %>
+              <i class="bi bi-tools"></i>
+              Servicios
+            <% end %>
+          </li>
+
+          <li class="nav-item">
+            <%= link_to employees_path, class: "nav-link" do %>
+              <i class="bi bi-person-badge-fill"></i>
+              Gestión de Personal
+            <% end %>
+          </li>
+
+          <li class="nav-item">
+            <%= link_to assignments_path, class: "nav-link" do %>
+              <i class="bi bi-diagram-3-fill"></i>
+              Asignaciones
+            <% end %>
+          </li>
+
+          <li class="nav-item">
+            <%= link_to reports_index_path, class: "nav-link" do %>
+              <i class="bi bi-bar-chart-fill"></i>
+              Reportes
+            <% end %>
           </li>
 
         </ul>
       </div>
     </div>
   </nav>
+
 
 
 
