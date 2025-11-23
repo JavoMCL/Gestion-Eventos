@@ -11,7 +11,7 @@ class EventsController < ApplicationController
         search_term, search_term, search_term, search_term
       )
     end
-    @events = @events.page(params[:page]).per(10)
+    @events = @events.page(params[:page]).per(5)
   end
 
   def new

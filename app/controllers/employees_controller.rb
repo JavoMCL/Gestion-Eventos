@@ -11,7 +11,7 @@ class EmployeesController < ApplicationController
         search_term, search_term, search_term
       )
     end
-    @employees = @employees.page(params[:page]).per(10)
+    @employees = @employees.page(params[:page]).per(5)
   end
 
   def new

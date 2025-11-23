@@ -11,7 +11,7 @@ class ClientsController < ApplicationController
         search_term, search_term, search_term
       )
     end
-    @clients = @clients.page(params[:page]).per(10)
+    @clients = @clients.page(params[:page]).per(5)
   end
 
   def new

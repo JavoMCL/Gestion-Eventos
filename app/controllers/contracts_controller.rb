@@ -4,6 +4,15 @@ class ContractsController < ApplicationController
 
   def index
     @contracts = Contract.includes(:event).all
+
+    if params[:search].present?
+      search_term = "%#{params[:search]}%"
+      @contracts = @contracts.where(
+        "state ILIKE ?",
+        search_term
+      )
+    end
+    @contracts = @contracts.page(params[:page]).per(5)
   end
 
   def new

@@ -11,7 +11,7 @@ class AssignmentsController < ApplicationController
         search_term, search_term, search_term
       )
     end
-    @assignments = @assignments.page(params[:page]).per(10)
+    @assignments = @assignments.page(params[:page]).per(5)
   end
 
   def new

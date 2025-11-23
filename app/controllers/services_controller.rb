@@ -11,7 +11,7 @@ class ServicesController < ApplicationController
         search_term, search_term, search_term
       )
     end
-    @services = @services.page(params[:page]).per(10)
+    @services = @services.page(params[:page]).per(5)
   end
 
   def new
