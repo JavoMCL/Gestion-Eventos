@@ -6,8 +6,12 @@
 
   <div class="mb-3">
     <%= form.label :position, "Cargo o Puesto", class: "form-label" %>
-    <%= form.text_field :position, class: "form-control", required: true %>
+    <%= form.select :position,
+                    ["Coordinador", "Técnico", "Asistente", "Logística", "Fotógrafo", "Seguridad"],
+                    { prompt: "Seleccione un cargo" },
+                    class: "form-select" %>
   </div>
+
 
   <div class="mb-3">
     <%= form.label :phone_number, "Teléfono", class: "form-label" %>
