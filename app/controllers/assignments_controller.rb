@@ -49,7 +49,7 @@ class AssignmentsController < ApplicationController
   end
 
   def assignment_params
-    params.require(:assignment).permit(:event_id, :employee_id, :role, :task, :state)
+    params.require(:assignment).permit(:event_id, :employee_id, :role, :task)
   end
 end
 

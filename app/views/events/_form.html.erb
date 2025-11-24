@@ -42,10 +42,16 @@
     <%= form.text_field :address, class: "form-control" %>
   </div>
 
-  <div class="mb-3">
-    <%= form.label :state, "Estado", class: "form-label" %>
-    <%= form.select :state, ['Planificado', 'Confirmado', 'Cancelado'], {}, class: "form-select" %>
-  </div>
+  <% unless @event.new_record? %>
+    <div class="mb-3">
+      <%= form.label :state, "Estado" %>
+      <%= form.select :state,
+                   [["Planificado", "planificado"],
+                    ["Cancelado", "cancelado"]],
+                   {},
+                   class: "form-select" %>
+    </div>
+  <% end %>
 
   <%= form.submit @event.new_record? ? 'Agregar' : 'Editar', class: "btn btn-success" %>
   <%= link_to 'Cancelar', events_path, class: "btn btn-secondary" %>
